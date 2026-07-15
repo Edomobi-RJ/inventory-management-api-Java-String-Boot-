@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Category {
@@ -13,6 +16,9 @@ public class Category {
     private Long id;
 
     private String name;
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<Product> products;
 
     private String description;
 
@@ -35,6 +41,14 @@ public class Category {
 
     public String getDescription() {
         return description;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
 }

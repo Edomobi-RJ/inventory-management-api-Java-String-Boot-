@@ -22,4 +22,15 @@ public class GlobalExceptionHandler {
 
         return errors;
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handlerResourceNotFoundException(
+            ResourceNotFoundException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("message", ex.getMessage());
+
+        return error;
+    }
 }

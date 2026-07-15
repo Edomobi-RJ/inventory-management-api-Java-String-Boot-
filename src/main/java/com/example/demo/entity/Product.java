@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +14,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.EntityListeners;
+
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
 
     @Id
@@ -45,6 +53,12 @@ public class Product {
 
     @NotBlank(message = "Status is required")
     private String status;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 
     @ManyToOne
@@ -91,6 +105,8 @@ public class Product {
         return sku;
     }
 
+    public String getSupplier() { return supplier; }
+
     public LocalDate getDateAdded() {
         return dateAdded;
     }
@@ -103,6 +119,9 @@ public class Product {
         return category;
     }
 
+    public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public LocalDateTime getUpdateAt() { return updatedAt;}
 
     public void setId(Long id) {
         this.id = id;

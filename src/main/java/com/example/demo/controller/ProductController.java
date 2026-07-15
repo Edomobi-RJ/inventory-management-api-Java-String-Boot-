@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import org.springframework.data.domain.Page;
+import com.example.demo.dto.ProductRequest;
 import com.example.demo.entity.Product;
 import com.example.demo.service.ProductService;
 import jakarta.validation.Valid;
@@ -20,13 +22,22 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public Page<Product> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sort) {
+
+        return productService.getProducts(page, size, sort);
+    }
+
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
     }
 
     @PostMapping
-    public Product createProduct(@Valid @RequestBody Product product) {
-        return productService.saveProduct(product);
+    public Product createProduct(@Valid @RequestBody ProductRequest request) {
+        return productService.saveProduct(request);
     }
 
     @PutMapping("/{id}")
@@ -43,5 +54,24 @@ public class ProductController {
     @GetMapping("/search")
     public List<Product> searchProducts(@RequestParam String name) {
         return productService.searchProducts(name);
+    }
+
+    @GetMapping("/low-stock")
+    public List<Product> getLowStockProducts(
+            @RequestParam(defaultValue = "5") Integer threshold) {
+
+        return productService.getLowStockProducts(threshold);
+    }
+
+    @GetMapping("/status")
+    public List<Product> getProductByStatus(
+            @RequestParam String status) {
+        return productService.getProductsByStatus(status);
+    }
+
+    @GetMapping("/supplier")
+    public List<Product> getProductBySupplier(
+            @RequestParam String supplier) {
+        return productService.getProductsBySupplier(supplier);
     }
 }
